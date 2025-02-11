@@ -22,8 +22,9 @@ public class ProductRepository {
     }
 
     public Product getId(String productId) {
+        if (productId == null) return null;
         for (Product product : productData) {
-            if (product.getProductId().equals(productId)) {
+            if (productId.equals(product.getProductId())) {
                 return product;
             }
         }
@@ -31,13 +32,13 @@ public class ProductRepository {
     }
 
     public Product update(Product product) {
-        for (int i = 0; i < productData.size(); i++) {
-            Product existProduct = productData.get(i);
+        for (Product existProduct : productData) {
             if (existProduct.getProductId().equals(product.getProductId())) {
-                productData.set(i, product);
-                return product;
+                existProduct.setProductName(product.getProductName());
+                existProduct.setProductQuantity(product.getProductQuantity());
+                break;
             }
         }
-        return null;
+        return product;
     }
 }
