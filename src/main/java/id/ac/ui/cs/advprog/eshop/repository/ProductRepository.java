@@ -31,14 +31,16 @@ public class ProductRepository {
         return null;
     }
 
-    public Product update(Product product) {
-        for (Product existProduct : productData) {
-            if (existProduct.getProductId().equals(product.getProductId())) {
-                existProduct.setProductName(product.getProductName());
-                existProduct.setProductQuantity(product.getProductQuantity());
-                break;
-            }
+    public void update(String productId, Product updatedProduct) {
+        Product product = getId(productId);
+        product.setProductName(updatedProduct.getProductName());
+        product.setProductQuantity(updatedProduct.getProductQuantity());
+    }
+
+    public void delete(String productId) {
+        Product productToDelete = getId(productId);
+        if (productToDelete != null) {
+            productData.remove(productToDelete);
         }
-        return product;
     }
 }
