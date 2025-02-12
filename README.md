@@ -1,6 +1,6 @@
-\Nama: Muhammad Afwan Hafizh\
-\NPM: 2306208855\
-\Kelas: Pemrograman Lanjut B\
+Nama: Muhammad Afwan Hafizh\
+NPM: 2306208855\
+Kelas: Pemrograman Lanjut B
 
 <details>
     <summary><b>Tutorial 1</b></summary>
