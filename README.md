@@ -7,31 +7,75 @@ Kelas: Pemrograman Lanjut B
 
 ## Reflection 1
 
+_You already implemented two new features using Spring Boot. Check again your source code and evaluate the coding standards that you have learned in this module. Write clean code principles and secure coding practices that have been applied to your code.  If you find any mistake in your source code, please explain how to improve your code. Please write your reflection inside the repository's README.md file._
+--
+
 Pada tutorial 1 ini, saya menggunakan Spring Boot untuk pertama kalinya. Spring Boot memanfaatkan Java sebagai bahasa pemrograman sehingga memudahkan saya yang telah mempelajari Java di mata kuliah DDP 2 untuk membaca dan membuat kode. Spring Boot mengadopsi arsitektur MVC (Model-View-Controller) sebagai alur datanya, dengan komponen-komponen seperti Model (misalnya, Product yang merepresentasikan data produk seperti productId, productName, dan productQuantity), Repository (seperti ProductRepository yang mengelola akses data untuk membuat, membaca, dan menghapus produk), Service (seperti ProductServiceImpl yang mengatur logika bisnisnya), dan Controller (menerima permintaan pengguna, berinteraksi dengan Service, dan mengembalikan respons ke View/Templates (Thymeleaf).
 
-Di tutorial kali ini, saya juga belajar dalam menerapkan clean code principle dan secure coding. Beberapa clean code principle yang diterapkan pada code ini.
+Di tutorial kali ini, saya juga belajar dalam menerapkan clean code principle dan secure coding. Salah satu clean code principle yang telah diaplikasikan adalah Meaningful Names. Contoh:
 
-1. Single Responsibility Principle (SRP)
-    - Kelas seperti Product, ProductRepository, ProductServiceImpl, dan ProductController memiliki fungsi utamanya masing-masing.
+```
+...
+    @GetMapping("/edit")
+    public String updateProductPage(@RequestParam String productId, Model model) {
+        Product product = service.getId(productId);
+        model.addAttribute("product", product);
+        return "EditProduct";
+    }
 
-2. Meaningful Names
-    - Nama kelas, method, dan variabel cukup deskriptif, seperti ProductRepository.create(), ProductService.findAll(), dan ProductController.createProductPage(), sehingga mudah dipahami.
+    @PostMapping("/edit")
+    public String editProductPost(@ModelAttribute Product product) {
+        service.update(product.getProductId(), product);
+        return "redirect:/product/list";
+    }
 
-3. Tidak ada unused variable dan unused library
-    - Semua variabel yang diinisialisasi serta library yang di-import, masing-masing dipakai dan dimanfaatkan fungsinya.
+    @PostMapping("/delete")
+    public String deleteProduct(@RequestParam String productId) {
+        service.delete(productId);
+        return "redirect:list";
+    }
+...
+```
+Pada potongan code ini, terlihat bahwa masing-masing function dapat teridentifikasi fungsinya dengan hanya membaca namanya tanpa harus memberikan penjelasan melalui comment. Contohnya seperti function updateProductPage, yaitu handler method yang menangani permintaan GET ke endpoint /edit, yang digunakan untuk menampilkan halaman edit produk. Parameter @RequestParam String productId mengambil ID produk dari URL, lalu service.getId(productId) digunakan untuk mengambil data produk dari database atau sumber lain. Objek produk tersebut kemudian ditambahkan ke model dengan model.addAttribute("product", product), sehingga bisa diakses di halaman tampilan. Metode ini mengembalikan string "EditProduct" yang merupakan nama template atau halaman HTML yang akan ditampilkan, misalnya EditProduct.html dalam folder templates.
 
-4. Don’t Repeat Yourself (DRY)
-    - Penggunaan @Getter dan @Setter dari Lombok mengurangi kode berulang (boilerplate) dalam model Product.
+Saya juga mengaplikasikan clean code principle lainnya seperti functions (contoh methdo findAll yang ada pada services), Object and Data Structure (contoh pada model Product), dan Error Handling pada EditProduct.html yang mencegah adanya input null atau format yang tidak sesuai pada kolom productQuantity dan productName.
 
-Selain clean code principle, pada code ini terdapat juga penerapan secure coding. Contohnya, seperti berikut.
+Selain pengaplikasian clean code principle, pada code ini terdapat juga penerapan secure coding. Contohnya, seperti berikut.
 
 1. Penggunaan UUID sebagai identifier model Product
-    - ID produk dihasilkan menggunakan UUID.randomUUID(), sehingga mengurangi kemungkinan resource path dapat diprediksi.
+   
+```
+...
+public Product create(Product product) {
+        product.setProductId(UUID.randomUUID().toString());
+        productData.add(product);
+        return product;
+    }
+...
+```
+
+ID produk dihasilkan menggunakan UUID.randomUUID(), sehingga mengurangi kemungkinan resource path dapat diprediksi.
 
 2. Output yang di-encode
     - Thymeleaf secara otomatis melakukan escaping pada HTML dalam template sehingga mengurangi risiko serangan XSS (Cross-Site Scripting).
 
 3. Validasi Input
-    - Ketika hendak melakukan edit nama atau kuantitas produk, service memeriksa apakah jumlah produk (productQuantity) bernilai negatif (productQuantity < 0) dan memastikan nama produk tidak bernilai null.
+   
+```
+public void update(String productId, Product updatedProduct) {
+        Product product = getId(productId);
+        if (updatedProduct.getProductName() != null) {
+            product.setProductName(updatedProduct.getProductName());
+        }
+
+        if (updatedProduct.getProductQuantity() > 0) {
+            product.setProductQuantity(updatedProduct.getProductQuantity());
+        }
+    }
+```
+
+Ketika hendak melakukan edit nama atau kuantitas produk, service memeriksa apakah jumlah produk (productQuantity) bernilai negatif (productQuantity <= 0) dan memastikan nama produk tidak bernilai null.
+
+
 
 </details>
