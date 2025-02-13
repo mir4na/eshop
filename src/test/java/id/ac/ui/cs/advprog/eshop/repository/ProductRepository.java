@@ -67,4 +67,116 @@ class ProductRepositoryTest {
         assertEquals(product2.getProductId(), savedProduct.getProductId());
         assertFalse(productIterator.hasNext());
     }
+
+    @Test
+    void testEditProductWithPositiveQuantity() {
+        Product product = new Product();
+        product.setProductName("Ubur-ubur");
+        product.setProductQuantity(150);
+        productRepository.create(product);
+        String productId = product.getProductId();
+
+        Product updatedProduct = new Product();
+        updatedProduct.setProductQuantity(250);
+        productRepository.update(productId, updatedProduct);
+
+        assertEquals("Ubur-ubur", product.getProductName());
+        assertEquals(250, product.getProductQuantity());
+    }
+
+    @Test
+    void testEditProductWithNegativeQuantity() {
+        Product product = new Product();
+        product.setProductName("Lato-lato");
+        product.setProductQuantity(150);
+        productRepository.create(product);
+        String productId = product.getProductId();
+
+        Product updatedProduct = new Product();
+        updatedProduct.setProductQuantity(-50);
+        productRepository.update(productId, updatedProduct);
+
+        assertEquals("Lato-lato", product.getProductName());
+        assertEquals(150, product.getProductQuantity());
+    }
+
+    @Test
+    void testEditProductWithValidName() {
+        Product product = new Product();
+        product.setProductName("Lato-lato");
+        product.setProductQuantity(150);
+        Product savedProduct = productRepository.create(product);
+        String productId = savedProduct.getProductId();
+
+        Product updatedProduct = new Product();
+        updatedProduct.setProductName("Lato-lato badak");
+        productRepository.update(productId, updatedProduct);
+
+        assertEquals("Lato-lato badak", product.getProductName());
+        assertEquals(150, product.getProductQuantity());
+    }
+
+    @Test
+    void testEditProductWithNullName() {
+        Product product = new Product();
+        product.setProductName("Lato-lato");
+        product.setProductQuantity(150);
+        productRepository.create(product);
+        String productId = product.getProductId();
+
+        Product updatedProduct = new Product();
+        updatedProduct.setProductName(null);
+        productRepository.update(productId, updatedProduct);
+
+        assertEquals("Lato-lato", product.getProductName());
+        assertEquals(150, product.getProductQuantity());
+    }
+
+    @Test
+    void testDeleteProduct() {
+        Product product = new Product();
+        product.setProductName("Tumbal Proyek");
+        product.setProductQuantity(100);
+        Product savedProduct = productRepository.create(product);
+        String productId = savedProduct.getProductId();
+
+        productRepository.delete(productId);
+
+        Iterator<Product> productIterator = productRepository.findAll();
+        assertFalse(productIterator.hasNext());
+    }
+
+    @Test
+    void testDeleteProductWithInvalidId() {
+        Product product = new Product();
+        product.setProductName("Kecubung Liar");
+        product.setProductQuantity(100);
+        productRepository.create(product);
+
+        productRepository.delete("invalid-id");
+
+        Iterator<Product> productIterator = productRepository.findAll();
+        assertTrue(productIterator.hasNext());
+    }
+
+    @Test
+    void testAllFeature() {
+        Product product = new Product();
+        product.setProductName("Kecubung Liar");
+        product.setProductQuantity(100);
+        productRepository.create(product);
+
+        Product updatedProduct = new Product();
+        updatedProduct.setProductName("Kecubung Halal");
+        updatedProduct.setProductQuantity(-2);
+        productRepository.update(product.getProductId(), updatedProduct);
+
+        assertEquals("Kecubung Halal", product.getProductName());
+        assertEquals(100, product.getProductQuantity());
+
+        productRepository.delete(product.getProductId());
+
+        Iterator<Product> productIterator = productRepository.findAll();
+        assertFalse(productIterator.hasNext());
+    }
 }

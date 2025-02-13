@@ -33,8 +33,13 @@ public class ProductRepository {
 
     public void update(String productId, Product updatedProduct) {
         Product product = getId(productId);
-        product.setProductName(updatedProduct.getProductName());
-        product.setProductQuantity(updatedProduct.getProductQuantity());
+        if (updatedProduct.getProductName() != null) {
+            product.setProductName(updatedProduct.getProductName());
+        }
+
+        if (updatedProduct.getProductQuantity() > 0) {
+            product.setProductQuantity(updatedProduct.getProductQuantity());
+        }
     }
 
     public void delete(String productId) {

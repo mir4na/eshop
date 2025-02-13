@@ -36,14 +36,6 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void update(String productId, Product product) {
-        if (product.getProductQuantity() < 0) {
-            throw new IllegalArgumentException("Product quantity is negative");
-        }
-
-        if (product.getProductName() == null) {
-            throw new IllegalArgumentException("Product name is null");
-        }
-
         productRepository.update(productId, product);
     }
 
