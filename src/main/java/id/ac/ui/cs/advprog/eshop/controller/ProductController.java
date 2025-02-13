@@ -40,12 +40,12 @@ public class ProductController {
     public String updateProductPage(@RequestParam String productId, Model model) {
         Product product = service.getId(productId);
         model.addAttribute("product", product);
-        return "editProduct";
+        return "EditProduct";
     }
 
     @PostMapping("/edit")
-    public String updateProduct(@ModelAttribute Product product, Model model) {
-        service.update(product);
-        return "redirect:list";
+    public String editProductPost(@ModelAttribute Product product) {
+        service.update(product.getProductId(), product);
+        return "redirect:/product/list";
     }
 }
