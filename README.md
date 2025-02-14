@@ -81,6 +81,45 @@ public void update(String productId, Product updatedProduct) {
 ```
 
 Ketika hendak melakukan edit nama atau kuantitas produk, service memeriksa apakah jumlah produk (productQuantity) bernilai negatif (productQuantity <= 0) dan memastikan nama produk tidak bernilai null.
+
+"_If you find any mistake in your source code, please explain how to improve your code._"
+
+Menurut saya, dari kedua fitur yang saya implementasikan, terdapat beberapa hal yang perlu untuk ditingkatkan, Salah satu contohnya adalah memberikan **Logging** setiap adanya pertukaran/pergantian data (pada edit atau delete). Berikut contoh codenya.
+```
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+@Service
+public class ProductServiceImpl implements ProductService {
+    private static final Logger logger = LoggerFactory.getLogger(ProductServiceImpl.class);
+
+    @Override
+    public void delete(String productId) {
+        logger.info("Attempting to delete product with ID: {}", productId);
+        try {
+            productRepository.delete(productId);
+            logger.info("Product deleted successfully.");
+        } catch (Exception e) {
+            logger.error("Failed to delete product: {}", e.getMessage());
+        }
+    }
+}
+```
+
+Potongan code di atas adalah contoh dari code improvementnya. Dengan adanya logger, saya dapat memantau/mengetahui adanya aktivitas yang terjadi sehingga saya bisa memastikan keamanan tiap terjadinya pertukaran/pergantian data.
+
+Contoh lainnya, Tambahan validasi input ketika melakukan update pada nama product. Berikut contoh codenya.
+
+```
+if (updatedProduct.getProductName() != null && !updatedProduct.getProductName().trim().isEmpty()) {
+    product.setProductName(updatedProduct.getProductName());
+}
+```
+
+ Dengan adanya validasi input kita dapat memastikan bahwa productName tidak hanya tidak null, tetapi juga tidak kosong atau mengandung karakter yang tidak valid.
+
+ Dengan melakukan refleksi 1, saya menyadari bahwa menerapkan clean code principles dan secure coding sangatlah penting. Clean code membuat kode mudah dibaca, dipahami, dan dikembangkan sehingga meningkatkan efisiensi pengembangan dan mengurangi risiko bug. Sementara itu, secure coding melindungi aplikasi kita dari berbagai kerentanan keamanan, seperti broken access control, injection, dan lainnya yang pastinya dapat mengancam keamanan data pengguna.
+
 </details>
 
 <details>
