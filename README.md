@@ -94,7 +94,112 @@ _Suppose that after writing the CreateProductFunctionalTest.java along with the 
 _What do you think about the cleanliness of the code of the new functional test suite? Will the new code reduce the code quality? Identify the potential clean code issues, explain the reasons, and suggest possible improvements to make the code cleaner! Please write your reflection inside the repository's README.md file._
 ___
 
+Setelah membuat dan menjalankan unit test pada kode yang telah dibuat, saya mendapatkan beberapa pembelajaran penting, yaitu:
 
+**Jumlah dan Kualitas Unit Test**
+
+Dalam implementasi yang saya lakukan, semua test berhasil dijalankan dengan baik (100% passed). Unit test yang dibuat telah mencakup berbagai skenario seperti:
+
+- Test pembuatan dan pencarian produk (testCreateAndFind)
+- Test untuk kondisi list produk kosong (testFindAllIfEmpty)
+- Test untuk multiple produk (testFindAllIfMoreThanOneProduct)
+- Test update produk dengan berbagai kondisi (valid dan invalid)
+- Test penghapusan produk
+
+Mengenai pertanyaan "_How many unit tests should be made in a class?_", menurut saya tidak ada jumlah pasti yang dapat dijadikan acuan. Sebab, menurut saya yang terpenting dari adanya unit test, unit test harus mencakup beberapa hal berikut:
+
+- Mencakup semua fitur utama
+- Menguji berbagai skenario (positif dan negatif)
+- Memverifikasi semua business requirement
+- Menguji edge cases dan error handling
+
+**Code Coverage**
+
+Dalam project ini, saya berhasil mencapai code coverage 100%, yang berarti semua baris kode telah dieksekusi oleh test. Namun, saya memahami bahwa code coverage 100% tidak menjamin kode bebas dari bug atau error. Hal ini disebabkan oleh beberapa hal berikut:
+
+- Code coverage hanya mengukur baris kode yang dieksekusi, bukan kebenaran logika
+- Code coverage tidak menjamin
+  a. Kesalahan dalam implementasi requirement
+  b. Edge cases yang belum terpikirkan
+  c. Masalah integrasi antar komponen
+  d. Isu performa
+  e. Masalah konkurensi
+
+**Analisis Clean Code pada Functional Test**
+
+Menurut saya, jika melihat struktur functional test di CreateProductFunctionalTest.java dan kemungkinan penambahan test suite baru, ada beberapa hal-hal yang kemungkinan dapat ditingkatkan, yaitu:
+
+1. Adanya duplikasi kode
+   - Setup code (@BeforeEach dan konfigurasi server) terduplikasi di setiap test class
+   - Beberapa assertions dan utility methods ditulis berulang kali
+
+2. Abstraksi yang Kurang Optimal
+   - Interaksi dengan web element tersebar di berbagai method
+   - Logic pembuatan URL diulang-ulang
+
+Contoh perbaikan yang dapat dilakukan:
+
+1. Membuat Base Test Class
+```
+public abstract class BaseProductFunctionalTest {
+    @LocalServerPort
+    protected int serverPort;
+
+    @Value("${app.baseUrl:http://localhost}")
+    protected String testBaseUrl;
+
+    protected String baseUrl;
+    
+    protected String buildUrl(String endpoint) {
+        return String.format("%s:%d%s", testBaseUrl, serverPort, endpoint);
+    }
+}
+```
+
+2. Implementasi Page Object Pattern
+
+```
+public class ProductPage {
+    private final ChromeDriver driver;
+    
+    public ProductPage(ChromeDriver driver) {
+        this.driver = driver;
+    }
+    
+    public void createProduct(String name, int quantity) {
+        driver.findElement(By.id("nameInput")).sendKeys(name);
+        driver.findElement(By.id("quantityInput")).sendKeys(String.valueOf(quantity));
+        driver.findElement(By.tagName("button")).click();
+    }
+    
+    public int getProductCount() {
+        return driver.findElements(By.className("product-item")).size();
+    }
+}
+```
+
+3. Standardisasi Helper Methods
+
+```
+public class TestHelper {
+    public static void verifyPageTitle(ChromeDriver driver, String expectedTitle) {
+        assertEquals(expectedTitle, driver.getTitle());
+    }
+    
+    public static void verifyProductExists(ChromeDriver driver, String name, int quantity) {
+        assertTrue(driver.findElements(By.xpath("//*[contains(text(), '" + name + "')]")).size() > 0);
+        assertTrue(driver.findElements(By.xpath("//*[contains(text(), '" + quantity + "')]")).size() > 0);
+    }
+}
+```
+
+Dengan menerapkan contoh perbaikan di atas, maka code akan menjadi:
+
+1. Lebih mudah dimaintain karena mengurangi duplikasi
+2. Lebih mudah dibaca dan dipahami
+3. Lebih robust dalam penanganan web elements
+
+Dengan merefleksikan tutorial mengenai functional test dan unit test, artinya meskipun semua test berhasil dijalankan dengan code coverage 100%, masih ada ruang untuk peningkatan dalam hal clean code dan maintainability karena tujuan utama dari testing bukan hanya mencapai coverage 100%, tetapi memastikan kualitas dan keandalan aplikasi secara keseluruhan.
 
 </details>
 
