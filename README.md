@@ -7,7 +7,11 @@ Kelas: Pemrograman Lanjut B
 <details>
     <summary><b>Tutorial 1</b></summary>
 
-## Reflection 1
+___
+
+<details>
+    <summary><b>Reflection 1</b></summary>
+    
 ___
 _You already implemented two new features using Spring Boot. Check again your source code and evaluate the coding standards that you have learned in this module. Write clean code principles and secure coding practices that have been applied to your code.  If you find any mistake in your source code, please explain how to improve your code. Please write your reflection inside the repository's README.md file._
 ___
@@ -77,8 +81,11 @@ public void update(String productId, Product updatedProduct) {
 ```
 
 Ketika hendak melakukan edit nama atau kuantitas produk, service memeriksa apakah jumlah produk (productQuantity) bernilai negatif (productQuantity <= 0) dan memastikan nama produk tidak bernilai null.
+</details>
 
-## Reflection 2
+<details>
+    <summary><b>Reflection 2</b></summary>
+    
 ___
 _After writing the unit test, how do you feel? How many unit tests should be made in a class? How to make sure that our unit tests are enough to verify our program? It would be good if you learned about code coverage. Code coverage is a metric that can help you understand how much of your source is tested. If you have 100% code coverage, does that mean your code has no bugs or errors?_
 
@@ -88,5 +95,7 @@ _What do you think about the cleanliness of the code of the new functional test 
 ___
 
 
+
+</details>
 
 </details>
