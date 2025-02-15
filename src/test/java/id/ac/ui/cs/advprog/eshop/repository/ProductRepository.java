@@ -69,6 +69,16 @@ class ProductRepositoryTest {
     }
 
     @Test
+    void testGetIdWithNullProductId() {
+        Product product = new Product();
+        product.setProductName("Mister Gepeng");
+        product.setProductQuantity(100);
+        productRepository.create(product);
+
+        assertNull(productRepository.getId(null));
+    }
+
+    @Test
     void testEditProductWithPositiveQuantity() {
         Product product = new Product();
         product.setProductName("Ubur-ubur");
