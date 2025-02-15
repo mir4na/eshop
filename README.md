@@ -26,12 +26,16 @@ Di tutorial kali ini, saya juga belajar dalam menerapkan clean code principle da
 Selain clean code principle, pada code ini terdapat juga penerapan secure coding. Contohnya, seperti berikut.
 
 1. Penggunaan UUID sebagai identifier model Product
-    - ID produk dihasilkan menggunakan UUID.randomUUID(), sehingga mengurangi kemungkinan resource path dapat diprediksi.
+    - ID produk dihasilkan menggunakan UUID.randomUUID(), sehingga mengurangi kemungkinan resource path dapat di-bruteforce.
 
 2. Output yang di-encode
     - Thymeleaf secara otomatis melakukan escaping pada HTML dalam template sehingga mengurangi risiko serangan XSS (Cross-Site Scripting).
 
 3. Validasi Input
     - Ketika hendak melakukan edit nama atau kuantitas produk, service memeriksa apakah jumlah produk (productQuantity) bernilai negatif (productQuantity < 0) dan memastikan nama produk tidak bernilai null.
+
+Namun, ada beberapa kesalahan pada code yang seharusnya dapat diperbaiki. Kesalahan-kesalahan tersebut mencakup hal berikut:
+
+1. 
 
 </details>
