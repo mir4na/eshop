@@ -2,9 +2,7 @@ name: Scanning code with SonarCloud
 
 on:
   push:
-    branches: ["master"]
   pull_request:
-    types: [opened, synchronize, reopened]
 
 jobs:
   build-and-analyze:
