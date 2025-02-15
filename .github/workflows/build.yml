@@ -39,10 +39,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        with:
-          args: >
-            -Dsonar.projectKey=mir4na_eshop
-            -Dsonar.organization=mir4na
-            -Dsonar.host.url=https://sonarcloud.io
-            -Dsonar.java.binaries=build/classes/java/main
-            -Dsonar.junit.reportPaths=build/test-results/test
+        run: ./gradlew build sonar --info

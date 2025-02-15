@@ -1,8 +1,17 @@
 plugins {
 	java
 	jacoco
+	id("org.sonarqube") version "6.0.1.5171"
 	id("org.springframework.boot") version "3.4.2"
 	id("io.spring.dependency-management") version "1.1.7"
+}
+
+sonar {
+	properties {
+		property("sonar.projectKey", "mir4na_eshop")
+		property("sonar.organization", "mir4na")
+		property("sonar.host.url", "https://sonarcloud.io")
+	}
 }
 
 group = "id.ac.ui.cs.advprog"
