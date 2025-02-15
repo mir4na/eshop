@@ -15,11 +15,7 @@ class EshopApplicationTests {
 
 	@Test
 	void contextLoads() {
-		assertNotNull(applicationContext);
-	}
-
-	@Test
-	void testMethodStartApplication() {
 		EshopApplication.main(new String[] {});
+		assertNotNull(applicationContext);
 	}
 }
