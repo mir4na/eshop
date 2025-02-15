@@ -19,7 +19,7 @@ class ProductRepositoryTest {
     void setUp() {
         productRepository = new ProductRepository();
         sampleProduct = new Product();
-        sampleProduct.setProductName("Tumbal Proyek");
+        sampleProduct.setProductName("Tumbal");
         sampleProduct.setProductQuantity(100);
     }
 
