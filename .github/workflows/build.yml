@@ -1,0 +1,51 @@
+name: Scanning code with SonarCloud
+
+on:
+  push:
+    branches: ["master"]
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  build-and-analyze:
+    name: Build, Test, and Analyze with SonarCloud
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the Git repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK 23
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "23"
+          cache: "gradle"
+
+      - name: Set gradlew as executable
+        run: chmod +x ./gradlew
+
+      - name: Cache SonarCloud packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+
+      - name: Run unit tests
+        run: ./gradlew test
+
+      - name: Run SonarCloud analysis
+        uses: SonarSource/sonarcloud-github-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: >
+            -Dsonar.projectKey=mir4na_eshop
+            -Dsonar.organization=mir4na
+            -Dsonar.host.url=https://sonarcloud.io
+            -Dsonar.java.binaries=build/classes/java/main
+            -Dsonar.junit.reportPaths=build/test-results/test
+            -Dsonar.coverage.jacoco.xmlReportPaths=build/reports/jacoco/test/jacocoTestReport.xml
