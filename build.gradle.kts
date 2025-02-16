@@ -11,6 +11,7 @@ sonar {
 		property("sonar.projectKey", "mir4na_eshop")
 		property("sonar.organization", "mir4na")
 		property("sonar.host.url", "https://sonarcloud.io")
+		property("sonar.coverage.jacoco.xmlReportPaths", "build/reports/jacoco/test/jacocoTestReport.xml")
 	}
 }
 
