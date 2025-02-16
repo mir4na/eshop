@@ -18,7 +18,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 @DirtiesContext
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @ExtendWith(SeleniumJupiter.class)
-public class CreateProductFunctionalTest {
+class CreateProductFunctionalTest {
     @LocalServerPort
     private int serverPort;
 
@@ -33,21 +33,21 @@ public class CreateProductFunctionalTest {
     }
 
     @Test
-    void pageTitle_isCorrect(ChromeDriver driver) throws Exception {
+    void pageTitle_isCorrect(ChromeDriver driver) {
         driver.get(baseUrl);
         String pageTitle = driver.getTitle();
         assertEquals("Create New Product", pageTitle);
     }
 
     @Test
-    void message_createProduct_isCorrect(ChromeDriver driver) throws Exception {
+    void message_createProduct_isCorrect(ChromeDriver driver) {
         driver.get(baseUrl);
         String message = driver.findElement(By.tagName("h3")).getText();
         assertEquals("Create New Product", message);
     }
 
     @Test
-    void createProduct_isCorrect(ChromeDriver driver) throws Exception {
+    void createProduct_isCorrect(ChromeDriver driver) {
         driver.get(baseUrl);
         String expectedProductName = "Hatsune Miku";
         int expectedProductQuantity = 150;
