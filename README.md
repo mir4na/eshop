@@ -342,4 +342,6 @@ Ketika saya melakukan scannning dengan SonarCloud, saya mendapatkan beberapa iss
    
    Disini, saya memodifikasi pada file CreateProductFunctionalTest.java yang terletak di direktori src/test/java/id/ac/ui/cs/advprog/eshop/functional/. Saya mengubah deklarasi kelas CreateProductFunctionalTest dari public menjadi default (tanpa modifier), yang berarti kelas tersebut hanya dapat diakses dalam package yang sama. Perubahan ini mungkin dilakukan untuk membatasi visibilitas kelas dan mengontrol akses ke kelas tersebut, sehingga hanya kelas-kelas dalam paket yang sama yang dapat menggunakannya. Hal ini dapat meningkatkan maintainability dengan mengurangi kemungkinan kelas tersebut diakses atau diubah oleh kode di luar package-nya.
 
+Setelah me-resolve issue maintainability yang ada, saya memba
+
 </details>
