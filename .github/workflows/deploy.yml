@@ -10,7 +10,8 @@ jobs:
   deploy:
     if: |
       github.event.workflow_run.conclusion == 'success' &&
-      github.event.workflow_run.head_branch == 'master'
+      github.event.workflow_run.head_branch == 'master' &&
+      contains(fromJson('["Scanning code with SonarCloud", "Continuous Integration (CI)", "Scorecard supply-chain security"]'), github.event.workflow_run.name)
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
