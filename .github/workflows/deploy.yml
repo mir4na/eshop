@@ -5,12 +5,15 @@ on:
     workflows: ["Scanning code with SonarCloud", "Continuous Integration (CI)", "Scorecard supply-chain security"]
     types:
       - completed
+    branches:
+      - master
 
 jobs:
   deploy:
     if: |
       github.event.workflow_run.conclusion == 'success' &&
-      github.event.workflow_run.head_branch == 'master'
+      github.event.workflow_run.head_branch == 'master' &&
+      contains(fromJson('["Scanning code with SonarCloud", "Continuous Integration (CI)", "Scorecard supply-chain security"]'), github.event.workflow_run.name)
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
@@ -22,6 +25,6 @@ jobs:
           echo "$HOME/.koyeb/bin" >> $GITHUB_PATH
 
       - name: Deploy to Koyeb
-        run: koyeb service update <SERVICE_NAME> --git-redeploy
+        run: koyeb service update eshop --git-redeploy
         env:
           KOYEB_TOKEN: ${{ secrets.KOYEB_TOKEN }}
