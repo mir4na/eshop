@@ -4,7 +4,31 @@ on:
   workflow_dispatch:
 
 jobs:
+  check-status:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check combined status of workflows
+        id: check-status
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const { data: status } = await github.rest.repos.getCombinedStatusForRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: 'master',
+            });
+
+            const requiredWorkflows = ["Scanning code with SonarCloud", "Continuous Integration (CI)", "Scorecard supply-chain security"];
+            const allSuccess = status.statuses.every(status => status.state === 'success' && requiredWorkflows.includes(status.context));
+
+            if (!allSuccess) {
+              core.setFailed('Not all required workflows succeeded. Deployment aborted.');
+            } else {
+              console.log('All required workflows succeeded. Proceeding to deployment...');
+            }
+
   deploy:
+    needs: check-status
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
