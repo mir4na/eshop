@@ -243,3 +243,103 @@ Dengan merefleksikan tutorial mengenai functional test dan unit test, artinya me
 </details>
 
 </details>
+
+<details>
+    <summary><b>Tutorial 2</b></summary>
+
+___
+_You have implemented a CI/CD process that automatically runs the test suites, analyzes code quality, and deploys to a PaaS. Try to answer the following questions in order to reflect on your attempt completing the tutorial and exercise._
+
+1. _List the code quality issue(s) that you fixed during the exercise and explain your strategy on fixing them._
+2. _Look at your CI/CD workflows (GitHub)/pipelines (GitLab). Do you think the current implementation has met the definition of Continuous Integration and Continuous Deployment? Explain the reasons (minimum 3 sentences)!_
+___
+
+Ketika saya melakukan scannning dengan SonarCloud, saya mendapatkan beberapa issue pada maintainability. Berikut beberapa issue yang saya perbaiki.
+
+1. Group Dependency
+   
+   <img src="https://github.com/user-attachments/assets/b7209193-d049-49e6-8657-cc6e5e31949e" width="600">
+
+   Disini, saya memindahkan dependensi bagian TestRuntimeOnly dari baris 49 ke baris 58 dan menambahkan beberapa baris baru yang ditandai dengan tanda "+". Perubahan ini saya lakukan untuk membuat group dependency menjadi lebih terstruktur sehingga readability pada code ini akan meningkat dan memudahkan untuk pemeliharaan kode.
+
+2. Field Injection
+
+   <img src="https://github.com/user-attachments/assets/fca036aa-db53-410c-be6f-210445e18d68" width="600">
+
+   Disini, Saya mengubah cara injeksi dependensi dari field injection (@Autowired) menjadi constructor injection. Saya menghapus anotasi @Autowired pada field ProductService dan menggantinya dengan membuat constructor explicit yang menerima parameter ProductService. Selain itu, saya juga menambahkan modifier final pada field service untuk memastikan immutability, kemudian menginisialisasi field tersebut melalui constructor dengan this.service = service. Saya yakin perubahan ini membuat kode menjadi lebih aman dan testable.
+
+   Hal ini berlaku juga dengan code ini.
+
+    <img src="https://github.com/user-attachments/assets/16838c68-8326-4c46-bb13-a59f5667f025" width="600">
+
+3. Fix Assertion
+
+   Code 1 (sebelum diperbaiki):
+   ```java
+    package id.ac.ui.cs.advprog.eshop;
+    import org.junit.jupiter.api.Test;
+    import org.springframework.boot.test.context.SpringBootTest;
+    import org.springframework.beans.factory.annotation.Autowired;
+    import org.springframework.context.ApplicationContext;
+    import static org.junit.jupiter.api.Assertions.assertNotNull;
+    @SpringBootTest
+    class EshopApplicationTests {
+        @Autowired
+        private ApplicationContext applicationContext;
+        @Test
+        void contextLoads() {
+            assertNotNull(applicationContext);
+        }
+        @Test
+        void testMethodStartApplication() {
+            EshopApplication.main(new String[] {});
+        }
+    }
+   ```
+
+   Code 2 (setelah diperbaiki):
+
+   ```java
+    package id.ac.ui.cs.advprog.eshop;
+    import org.junit.jupiter.api.Test;
+    import org.springframework.boot.test.context.SpringBootTest;
+    import org.springframework.beans.factory.annotation.Autowired;
+    import org.springframework.context.ApplicationContext;
+    
+    import static org.junit.jupiter.api.Assertions.assertNotNull;
+    
+    @SpringBootTest
+    class EshopApplicationTests {
+    
+        @Autowired
+        private ApplicationContext applicationContext;
+    
+        @Test
+        void contextLoads() {
+           EshopApplication.main(new String[] {});
+           assertNotNull(applicationContext);
+        }
+    }
+   ```
+
+   Disini, Saya menggabungkan dua test method yang sebenarnya memiliki tujuan yang sama. Saya menggabungkan method testMethodStartApplication() ke dalam method contextLoads() karena keduanya sama-sama menguji inisialisasi aplikasi Spring. Dalam implementasi baru, saya memastikan aplikasi dapat dijalankan dengan memanggil EshopApplication.main() terlebih dahulu, kemudian memverifikasi bahwa applicationContext berhasil diinisialisasi dengan assertNotNull. Dengan perubahan ini, maka code dapat menghindari redundancy dalam testing.
+   
+4. Unnecessary Exception Throws
+
+   <img src="https://github.com/user-attachments/assets/29acad18-3b01-4609-ad5c-c6755ad68fd3" width="500">
+   
+   Disini, Saya menghapus throws Exception yang tidak diperlukan dari beberapa method test. Saya menghilangkan throws Exception pada method pageTitle_isCorrect(), message_createProduct_isCorrect(), dan createProduct_isCorrect() karena assertion dalam JUnit sebenarnya sudah menangani exception secara otomatis sehingga tidak perlu mendeklarasikannya secara eksplisit. Perubahan ini membuat kode menjadi lebih bersih dan menghindari penanganan exception yang tidak perlu, sesuai dengan best practice dalam penulisan unit test.
+
+5. Unnecessary Modifier
+
+   <img src="https://github.com/user-attachments/assets/cb4f91f7-ddd6-446c-8a03-bcbdf5ee2a53" width="600">
+   
+   Disini, Saya menghapus modifier public yang tidak diperlukan dari deklarasi method-methodnya. Penghapusan ini saya lakukan karena secara default, method-method dalam interface sudah bersifat public, sehingga penulisan modifier public menjadi redundant. Saya menghapus modifier public dari method create(), getId(), update(), delete(), dan findAll() agar kode menjadi lebih bersih dan sesuai dengan best practice dalam penulisan interface Java.
+
+6. Encapsulation
+  
+   <img src="https://github.com/user-attachments/assets/c45896b3-18e0-447f-9129-a245add6eac4" width="500">
+   
+   Disini, saya memodifikasi pada file CreateProductFunctionalTest.java yang terletak di direktori src/test/java/id/ac/ui/cs/advprog/eshop/functional/. Saya mengubah deklarasi kelas CreateProductFunctionalTest dari public menjadi default (tanpa modifier), yang berarti kelas tersebut hanya dapat diakses dalam paket yang sama. Perubahan ini mungkin dilakukan untuk membatasi visibilitas kelas dan mengontrol akses ke kelas tersebut, sehingga hanya kelas-kelas dalam paket yang sama yang dapat menggunakannya. Hal ini dapat meningkatkan maintainability dengan mengurangi kemungkinan kelas tersebut diakses atau diubah oleh kode di luar paketnya.
+
+</details>
