@@ -5,6 +5,8 @@ on:
     workflows: ["Scanning code with SonarCloud", "Continuous Integration (CI)", "Scorecard supply-chain security"]
     types:
       - completed
+    branches:
+      - master
 
 jobs:
   deploy:
