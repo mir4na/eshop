@@ -340,6 +340,6 @@ Ketika saya melakukan scannning dengan SonarCloud, saya mendapatkan beberapa iss
   
    <img src="https://github.com/user-attachments/assets/c45896b3-18e0-447f-9129-a245add6eac4" width="500">
    
-   Disini, saya memodifikasi pada file CreateProductFunctionalTest.java yang terletak di direktori src/test/java/id/ac/ui/cs/advprog/eshop/functional/. Saya mengubah deklarasi kelas CreateProductFunctionalTest dari public menjadi default (tanpa modifier), yang berarti kelas tersebut hanya dapat diakses dalam paket yang sama. Perubahan ini mungkin dilakukan untuk membatasi visibilitas kelas dan mengontrol akses ke kelas tersebut, sehingga hanya kelas-kelas dalam paket yang sama yang dapat menggunakannya. Hal ini dapat meningkatkan maintainability dengan mengurangi kemungkinan kelas tersebut diakses atau diubah oleh kode di luar paketnya.
+   Disini, saya memodifikasi pada file CreateProductFunctionalTest.java yang terletak di direktori src/test/java/id/ac/ui/cs/advprog/eshop/functional/. Saya mengubah deklarasi kelas CreateProductFunctionalTest dari public menjadi default (tanpa modifier), yang berarti kelas tersebut hanya dapat diakses dalam package yang sama. Perubahan ini mungkin dilakukan untuk membatasi visibilitas kelas dan mengontrol akses ke kelas tersebut, sehingga hanya kelas-kelas dalam paket yang sama yang dapat menggunakannya. Hal ini dapat meningkatkan maintainability dengan mengurangi kemungkinan kelas tersebut diakses atau diubah oleh kode di luar package-nya.
 
 </details>
