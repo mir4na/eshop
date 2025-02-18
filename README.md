@@ -2,6 +2,8 @@ Nama: Muhammad Afwan Hafizh\
 NPM: 2306208855\
 Kelas: Pemrograman Lanjut B
 
+URL Deployment: https://unfair-smelt-adpro-eshop-mirana-9288cf1f.koyeb.app/
+
 ## Advanced Programming
 
 <details>
