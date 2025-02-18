@@ -2,7 +2,7 @@ name: Deploy to Koyeb
 
 on:
   workflow_run:
-    workflows: ["ci.yml", "scorecard.yml", "build.yml"]
+    workflows: ["Continuous Integration (CI)", "Scorecard supply-chain security", "Scanning code with SonarCloud"]
     types:
       - completed
 
