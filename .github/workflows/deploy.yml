@@ -2,7 +2,10 @@ name: Deploy to Koyeb
 
 on:
   workflow_run:
-    workflows: ["Scanning code with SonarCloud"]
+    workflows:
+      - "Continuous Integration (CI)"
+      - "Scorecard supply-chain security"
+      - "Scanning code with SonarCloud"
     types:
       - completed
 
@@ -10,18 +13,37 @@ jobs:
   deploy:
     if: |
       github.event.workflow_run.conclusion == 'success' &&
-      github.event.workflow_run.head_branch == 'master'
+      github.event.workflow_run.head_branch == 'master' &&
+      !contains(github.event.workflow_run.head_repository.full_name, 'dependabot')
     runs-on: ubuntu-latest
     steps:
+      - name: Check workflow status
+        id: check_workflows
+        run: |
+          ci_status=$(gh api repos/${{ github.repository }}/actions/runs?branch=master&event=push&status=completed&per_page=1&workflow_file=ci.yml --jq '.workflow_runs[0].conclusion')
+          scorecard_status=$(gh api repos/${{ github.repository }}/actions/runs?branch=master&event=push&status=completed&per_page=1&workflow_file=scorecard.yml --jq '.workflow_runs[0].conclusion')
+          build_status=$(gh api repos/${{ github.repository }}/actions/runs?branch=master&event=push&status=completed&per_page=1&workflow_file=build.yml --jq '.workflow_runs[0].conclusion')
+          
+          if [ "$ci_status" = "success" ] && [ "$scorecard_status" = "success" ] && [ "$build_status" = "success" ]; then
+            echo "should_deploy=true" >> $GITHUB_OUTPUT
+          else
+            echo "should_deploy=false" >> $GITHUB_OUTPUT
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
+
       - name: Check out repository
+        if: steps.check_workflows.outputs.should_deploy == 'true'
         uses: actions/checkout@v4
 
       - name: Install Koyeb CLI
+        if: steps.check_workflows.outputs.should_deploy == 'true'
         run: |
           curl -fsSL https://raw.githubusercontent.com/koyeb/koyeb-cli/master/install.sh | sh
           echo "$HOME/.koyeb/bin" >> $GITHUB_PATH
 
       - name: Deploy to Koyeb
+        if: steps.check_workflows.outputs.should_deploy == 'true'
         run: koyeb service redeploy unfair-smelt/eshop
         env:
           KOYEB_TOKEN: ${{ secrets.KOYEB_TOKEN }}
