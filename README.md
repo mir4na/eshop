@@ -346,7 +346,9 @@ Ketika saya melakukan scannning dengan SonarCloud, saya mendapatkan beberapa iss
 
 Berikut hasil analisis setelah saya memperbaiki semua quality issue yang ada:
 
-<img src="https://github.com/user-attachments/assets/c6ec91a4-f266-46e6-a2a0-cb4699943f2f" width="500">
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/c6ec91a4-f266-46e6-a2a0-cb4699943f2f" width="700">
+</p>
 
 Setelah me-resolve issue maintainability yang ada, saya melihat kembali implementasi CI/CD workflows pada repository saya. Menurut saya, workflow yang telah dibuat sudah memenuhi definisi dari Continuous Integration (CI) dan Continuous Deployment (CD). Berikut alasannya:
 
