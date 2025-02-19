@@ -344,6 +344,10 @@ Ketika saya melakukan scannning dengan SonarCloud, saya mendapatkan beberapa iss
    
    Disini, saya memodifikasi pada file CreateProductFunctionalTest.java yang terletak di direktori src/test/java/id/ac/ui/cs/advprog/eshop/functional/. Saya mengubah deklarasi kelas CreateProductFunctionalTest dari public menjadi default (tanpa modifier), yang berarti kelas tersebut hanya dapat diakses dalam package yang sama. Perubahan ini mungkin dilakukan untuk membatasi visibilitas kelas dan mengontrol akses ke kelas tersebut, sehingga hanya kelas-kelas dalam paket yang sama yang dapat menggunakannya. Hal ini dapat meningkatkan maintainability dengan mengurangi kemungkinan kelas tersebut diakses atau diubah oleh kode di luar package-nya.
 
+Berikut hasil analisis setelah saya memperbaiki semua quality issue yang ada:
+
+<img src="https://github.com/user-attachments/assets/c6ec91a4-f266-46e6-a2a0-cb4699943f2f" width="500">
+
 Setelah me-resolve issue maintainability yang ada, saya melihat kembali implementasi CI/CD workflows pada repository saya. Menurut saya, workflow yang telah dibuat sudah memenuhi definisi dari Continuous Integration (CI) dan Continuous Deployment (CD). Berikut alasannya:
 
 - Menurut saya, workflow ci.yml dan build.yml telah dirancang dengan baik sebagai penerapan Continuous Integration. Setiap kali ada perubahan kode yang di-push atau pull request, workflow ini secara otomatis menjalankan ./gradlew test dan menganalisis kode menggunakan SonarCloud. Ini memastikan bahwa setiap perubahan kode diintegrasikan dengan kode utama dan diverifikasi melalui tes otomatis (scanning). Dengan demikian, saya yakin risiko adanya bug dan maintainability issue dapat diminimalisir.
