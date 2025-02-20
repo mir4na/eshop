@@ -85,7 +85,17 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Install Koyeb CLI
+      - name: Cache Koyeb CLI
+        id: cache-koyeb
+        uses: actions/cache@v3
+        with:
+          path: ~/.koyeb
+          key: koyeb-cli-${{ runner.os }}
+          restore-keys: |
+            koyeb-cli-${{ runner.os }}
+
+      - name: Install Koyeb CLI (if not cached)
+        if: steps.cache-koyeb.outputs.cache-hit != 'true'
         run: |
           curl -fsSL https://raw.githubusercontent.com/koyeb/koyeb-cli/master/install.sh | sh
           echo "$HOME/.koyeb/bin" >> $GITHUB_PATH
