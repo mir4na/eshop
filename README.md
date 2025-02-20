@@ -344,14 +344,6 @@ Ketika saya melakukan scannning dengan SonarCloud, saya mendapatkan beberapa iss
    
    Disini, saya memodifikasi pada file CreateProductFunctionalTest.java yang terletak di direktori src/test/java/id/ac/ui/cs/advprog/eshop/functional/. Saya mengubah deklarasi kelas CreateProductFunctionalTest dari public menjadi default (tanpa modifier), yang berarti kelas tersebut hanya dapat diakses dalam package yang sama. Perubahan ini mungkin dilakukan untuk membatasi visibilitas kelas dan mengontrol akses ke kelas tersebut, sehingga hanya kelas-kelas dalam paket yang sama yang dapat menggunakannya. Hal ini dapat meningkatkan maintainability dengan mengurangi kemungkinan kelas tersebut diakses atau diubah oleh kode di luar package-nya.
 
-Setelah me-resolve issue maintainability yang ada, saya melihat kembali implementasi CI/CD workflows pada repository saya. Menurut saya, workflow yang telah dibuat sudah memenuhi definisi dari Continuous Integration (CI) dan Continuous Deployment (CD). Berikut alasannya:
-
-- Menurut saya, workflow ci.yml dan build.yml telah dirancang dengan baik sebagai penerapan Continuous Integration. Setiap kali ada perubahan kode yang di-push atau pull request, workflow ini secara otomatis menjalankan ./gradlew test dan menganalisis kode menggunakan SonarCloud. Ini memastikan bahwa setiap perubahan kode diintegrasikan dengan kode utama dan diverifikasi melalui tes otomatis (scanning). Dengan demikian, saya yakin risiko adanya bug dan maintainability issue dapat diminimalisir.
-
-- Lalu, pada workflow deploy.yml, workflow ini menunjukkan bahwa adanya implementasi Continuous Deployment (CD) yang baik. Workflow ini memeriksa status dari workflow CI (ci.yml), analisis keamanan (scorecard.yml), dan analisis kode (build.yml). Jika semua workflow tersebut berhasil, aplikasi akan otomatis di-redeploy ke Koyeb menggunakan Koyeb CLI. Ini memastikan bahwa setiap perubahan kode yang telah lolos tes, maka akan langsung diterapkan ke production.
-
-- Selain itu, saya juga memerhatikan bahwa workflow deploy.yml menunjukkan integrasi yang baik antara berbagai tahapan CI/CD. Dengan memeriksa status dari semua workflow yang relevan sebelum melakukan deployment, saya yakin bahwa hanya kode yang telah lolos semua tahapan test yang akan di-deploy sehingga ini meminimalisir risiko terjadinya bug dan memastikan kualitas kode yang konsisten.
-
-Secara keseluruhan, saya berpendapat bahwa implementasi ini sudah memenuhi prinsip-prinsip dasar CI/CD. Namun, pastinya saya juga menyadari bahwa saya perlu menyesuaikan workflow ini sesuai dengan kebutuhan dan perkembangan pada proyek.
+Setelah me-resolve issue maintainability yang ada, saya memba
 
 </details>
