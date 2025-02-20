@@ -101,14 +101,17 @@ jobs:
           echo "$HOME/.koyeb/bin" >> $GITHUB_PATH
           export PATH="$HOME/.koyeb/bin:$PATH"
 
+      - name: Verify PATH Update
+        run: |
+          echo "Updated PATH: $PATH"
+          which koyeb || echo "Koyeb CLI not found in PATH"
+
       - name: Verify Koyeb CLI Installation
         run: |
-          which koyeb || echo "Koyeb CLI not found in PATH"
-          koyeb version
+          $HOME/.koyeb/bin/koyeb version
 
       - name: Deploy to Koyeb
         run: |
-          export PATH="$HOME/.koyeb/bin:$PATH"
-          koyeb service redeploy unfair-smelt/eshop
+          $HOME/.koyeb/bin/koyeb service redeploy unfair-smelt/eshop
         env:
           KOYEB_TOKEN: ${{ secrets.KOYEB_TOKEN }}
