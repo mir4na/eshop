@@ -9,15 +9,10 @@ import java.util.UUID;
 
 @Repository
 public class CarRepository {
-    static int id = 0;
-
-    private List<Car> carData = new ArrayList<>();
+    private final List<Car> carData = new ArrayList<>();
 
     public Car create(Car car) {
-        if(car.getCarId() == null) {
-            UUID uuid = UUID.randomUUID();
-            car.setCarId(uuid.toString());
-        }
+        car.setCarId(UUID.randomUUID().toString());
         carData.add(car);
         return car;
     }
@@ -27,6 +22,7 @@ public class CarRepository {
     }
 
     public Car findById(String id) {
+        if (carData.isEmpty()) return null;
         for (Car car : carData) {
             if (car.getCarId().equals(id)) {
                 return car;
@@ -35,18 +31,23 @@ public class CarRepository {
         return null;
     }
 
-    public Car update(String id, Car updatedCar) {
-        for (int i = 0; i < carData.size(); i++) {
-            Car car = carData.get(i);
-            if (car.getCarId().equals(id)) {
-                car.setCarName(updatedCar.getCarName());
-                car.setCarColor(updatedCar.getCarColor());
-                car.setCarQuantity(updatedCar.getCarQuantity());
-                return car;
-            }
+    public void update(String id, Car updatedCar) {
+        Car car = findById(id);
+
+        if (updatedCar.getCarName() != null) {
+            car.setCarName(updatedCar.getCarName());
         }
-        return null;
+
+        if (updatedCar.getCarQuantity() > 0) {
+            car.setCarQuantity(updatedCar.getCarQuantity());
+        }
+
     }
 
-    public void delete(String id) { carData.removeIf(car -> car.getCarId().equals(id));}
+    public void delete(String carId) {
+        Car carToDelete = findById(carId);
+        if (carToDelete != null) {
+            carData.remove(carToDelete);
+        }
+    }
 }
