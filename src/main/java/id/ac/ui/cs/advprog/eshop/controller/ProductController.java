@@ -1,7 +1,7 @@
 package id.ac.ui.cs.advprog.eshop.controller;
 import id.ac.ui.cs.advprog.eshop.model.Car;
 import id.ac.ui.cs.advprog.eshop.model.Product;
-import id.ac.ui.cs.advprog.eshop.service.CarServiceImpl;
+import id.ac.ui.cs.advprog.eshop.service.CarService;
 import id.ac.ui.cs.advprog.eshop.service.ProductService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,11 +15,11 @@ import java.util.List;
 @RequestMapping("/product")
 public class ProductController {
 
-    private final ProductService service;
+    private final ProductService productService;
 
     @Autowired
-    public ProductController(ProductService service) {
-        this.service = service;
+    public ProductController(ProductService productService) {
+        this.productService = productService;
     }
 
     @GetMapping("/create")
@@ -31,33 +31,33 @@ public class ProductController {
 
     @PostMapping("/create")
     public String createProductPost(@ModelAttribute Product product) {
-        service.create(product);
+        productService.create(product);
         return "redirect:list";
     }
 
     @GetMapping("/list")
     public String productListPage(Model model) {
-        List<Product> allProducts = service.findAll();
+        List<Product> allProducts = productService.findAll();
         model.addAttribute("products", allProducts);
         return "ProductList";
     }
 
     @GetMapping("/edit")
     public String updateProductPage(@RequestParam String productId, Model model) {
-        Product product = service.getId(productId);
+        Product product = productService.getId(productId);
         model.addAttribute("product", product);
         return "EditProduct";
     }
 
     @PostMapping("/edit")
     public String editProductPost(@ModelAttribute Product product) {
-        service.update(product.getProductId(), product);
+        productService.update(product.getProductId(), product);
         return "redirect:/product/list";
     }
 
     @PostMapping("/delete")
     public String deleteProduct(@RequestParam String productId) {
-        service.delete(productId);
+        productService.delete(productId);
         return "redirect:list";
     }
 }
@@ -66,47 +66,48 @@ public class ProductController {
 @RequestMapping("/car")
 class CarController{
 
-    @Autowired
-    private CarServiceImpl carservice;
+    private final CarService carService;
+
+    public CarController(CarService carService) {
+        this.carService = carService;
+    }
 
     @GetMapping("/createCar")
     public String createCarPage(Model model) {
         Car car = new Car();
         model.addAttribute("car", car);
-        return "createCar";
+        return "CreateCar";
     }
 
     @PostMapping("/createCar")
-    public String createCarPost(@ModelAttribute Car car, Model model) {
-        carservice.create(car);
+    public String createCarPost(@ModelAttribute Car car) {
+        carService.create(car);
         return "redirect:listCar";
     }
 
     @GetMapping("/listCar")
     public String carListPage(Model model) {
-        List<Car> allCars = carservice.findAll();
+        List<Car> allCars = carService.findAll();
         model.addAttribute("cars", allCars);
-        return "carList";
+        return "CarList";
     }
 
     @GetMapping("/editCar/{carId}")
     public String editCarPage(@PathVariable String carId, Model model) {
-        Car car = carservice.findById(carId);
+        Car car = carService.findById(carId);
         model.addAttribute("car", car);
-        return "editCar";
+        return "EditCar";
     }
 
     @PostMapping("/editCar")
-    public String editCarPost(@ModelAttribute Car car, Model model) {
-        System.out.println(car.getCarId());
-        carservice.update(car.getCarId(), car);
-
+    public String editCarPost(@ModelAttribute Car car) {
+        carService.update(car.getCarId(), car);
         return "redirect:listCar";
     }
 
     @PostMapping("/deleteCar")
     public String deleteCar(@RequestParam("carId") String carId) {
-        carservice.deleteCarById(carId);
+        carService.deleteCarById(carId);
         return "redirect:listCar";
     }
 }
