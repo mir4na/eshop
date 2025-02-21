@@ -47,6 +47,13 @@ class CarRepositoryTest {
     @Nested
     class FindCarTests {
         @Test
+        void testFindByIdWithEmptyRepository() {
+            String testId = "test-id";
+            Car result = carRepository.findById(testId);
+            assertNull(result);
+        }
+
+        @Test
         void testFindAllIfEmpty() {
             Iterator<Car> carIterator = carRepository.findAll();
             assertFalse(carIterator.hasNext());
