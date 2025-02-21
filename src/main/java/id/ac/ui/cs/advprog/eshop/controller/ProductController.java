@@ -15,7 +15,7 @@ import java.util.List;
 @RequestMapping("/product")
 public class ProductController {
 
-    private static final String REDIRECT_LIST = "redirect:list";
+    private static final String redirectListProduct = "redirect:list";
     private final ProductService productService;
 
     @Autowired
@@ -33,7 +33,7 @@ public class ProductController {
     @PostMapping("/create")
     public String createProductPost(@ModelAttribute Product product) {
         productService.create(product);
-        return REDIRECT_LIST;
+        return redirectListProduct;
     }
 
     @GetMapping("/list")
@@ -59,7 +59,7 @@ public class ProductController {
     @PostMapping("/delete")
     public String deleteProduct(@RequestParam String productId) {
         productService.delete(productId);
-        return REDIRECT_LIST;
+        return redirectListProduct;
     }
 }
 
@@ -67,7 +67,7 @@ public class ProductController {
 @RequestMapping("/car")
 class CarController{
 
-    private final String REDIRECT_LIST_CAR = "redirect:listCar";
+    private final String redirectListCar = "redirect:listCar";
     private final CarService carService;
 
     public CarController(CarService carService) {
@@ -84,7 +84,7 @@ class CarController{
     @PostMapping("/createCar")
     public String createCarPost(@ModelAttribute Car car) {
         carService.create(car);
-        return REDIRECT_LIST_CAR;
+        return redirectListCar;
     }
 
     @GetMapping("/listCar")
@@ -104,12 +104,12 @@ class CarController{
     @PostMapping("/editCar")
     public String editCarPost(@ModelAttribute Car car) {
         carService.update(car.getCarId(), car);
-        return REDIRECT_LIST_CAR;
+        return redirectListCar;
     }
 
     @PostMapping("/deleteCar")
     public String deleteCar(@RequestParam("carId") String carId) {
         carService.deleteCarById(carId);
-        return REDIRECT_LIST_CAR;
+        return redirectListCar;
     }
 }
