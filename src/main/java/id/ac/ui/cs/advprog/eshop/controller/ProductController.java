@@ -1,4 +1,5 @@
 package id.ac.ui.cs.advprog.eshop.controller;
+
 import id.ac.ui.cs.advprog.eshop.model.Car;
 import id.ac.ui.cs.advprog.eshop.model.Product;
 import id.ac.ui.cs.advprog.eshop.service.CarServiceImpl;
@@ -14,23 +15,18 @@ import java.util.List;
 @Controller
 @RequestMapping("/product")
 public class ProductController {
-
-    private final ProductService service;
-
     @Autowired
-    public ProductController(ProductService service) {
-        this.service = service;
-    }
+    private ProductService service;
 
     @GetMapping("/create")
     public String createProductPage(Model model) {
         Product product = new Product();
         model.addAttribute("product", product);
-        return "CreateProduct";
+        return "createProduct";
     }
 
     @PostMapping("/create")
-    public String createProductPost(@ModelAttribute Product product) {
+    public String createProductPost(@ModelAttribute Product product, Model model) {
         service.create(product);
         return "redirect:list";
     }
@@ -39,24 +35,25 @@ public class ProductController {
     public String productListPage(Model model) {
         List<Product> allProducts = service.findAll();
         model.addAttribute("products", allProducts);
-        return "ProductList";
+        return "productList";
     }
 
-    @GetMapping("/edit")
-    public String updateProductPage(@RequestParam String productId, Model model) {
+    @GetMapping("/edit/{productId}")
+    public String editProductPage(@PathVariable String productId, Model model) {
         Product product = service.getId(productId);
         model.addAttribute("product", product);
-        return "EditProduct";
+        return "editProduct";
     }
 
     @PostMapping("/edit")
-    public String editProductPost(@ModelAttribute Product product) {
+    public String editProductPost(@ModelAttribute Product product, Model model) {
+        System.out.println(product.getProductId());
         service.update(product.getProductId(), product);
-        return "redirect:/product/list";
+        return "redirect:list";
     }
 
     @PostMapping("/delete")
-    public String deleteProduct(@RequestParam String productId) {
+    public String deleteProduct(@RequestParam("productId") String productId) {
         service.delete(productId);
         return "redirect:list";
     }
@@ -64,8 +61,7 @@ public class ProductController {
 
 @Controller
 @RequestMapping("/car")
-class CarController{
-
+class CarController extends ProductController {
     @Autowired
     private CarServiceImpl carservice;
 
@@ -100,7 +96,6 @@ class CarController{
     public String editCarPost(@ModelAttribute Car car, Model model) {
         System.out.println(car.getCarId());
         carservice.update(car.getCarId(), car);
-
         return "redirect:listCar";
     }
 
