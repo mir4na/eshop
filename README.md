@@ -368,52 +368,67 @@ ___
 _1) Explain what principles you apply to your project!_
 
 - Single Responsibility Principle (SRP)
+  
   Pada code ini, saya memastikan setiap kelas hanya memiliki satu responsibility. Misalnya, kelas Car dan Product hanya bertugas menyimpan data, sementara CarRepository dan ProductRepository fokus pada pengelolaan data seperti menambah, menghapus, atau memperbarui. Dengan demikian, jika ada perubahan pada logika penyimpanan data, saya hanya perlu mengubah repository tanpa memengaruhi model.
 
 - Open/Closed Principle (OCP)
+  
   Saya mengimplementasikan prinsip ini dengan cara membuat kode agar terbuka untuk ekstensi tetapi tertutup untuk modifikasi. Contohnya, dengan menggunakan interface seperti CarService dan ProductService, saya bisa menambahkan fungsionalitas baru di kelas implementasinya (CarServiceImpl dan ProductServiceImpl) tanpa mengubah kode yang sudah ada.
 
 - Liskov Substitution Principle (LSP)
+  
   Saya memastikan bahwa suatu kelas turunan dapat menggantikan kelas induk tanpa mengubah kebenaran code. Misalnya, CarServiceImpl dan ProductServiceImpl mengimplementasikan interface CarService dan ProductService. Artinya, di mana pun CarService digunakan, saya bisa menggantinya dengan CarServiceImpl tanpa ada masalah.
 
 - Interface Segregation Principle (ISP)
+  
   Saya memisahkan interface sesuai pada code ini. Misalnya, CarService hanya berisi metode yang relevan dengan mobil, seperti create, findById, dan deleteCarById. Dengan demikian, kelas yang mengimplementasikan interface ini tidak perlu mengimplementasikan metode yang tidak dibutuhkan.
 
 - Dependency Inversion Principle (DIP)
+  
   Saya menggunakan dependency injection untuk memastikan modul tidak bergantung pada modul lainnya. Misalnya, CarController bergantung pada CarService, bukan pada implementasi konkret seperti CarServiceImpl. Ini memungkinkan saya mengganti implementasi service tanpa mengubah controller. Dengan demikian, kode menjadi lebih fleksibel dan mudah dites.
 
 _2) Explain the advantages of applying SOLID principles to your project with examples_
 
 - Maintainability
+  
   Dengan menerapkan Single Responsibility Principle, setiap kelas hanya memiliki satu responsibility. Misalnya, dalam proyek ini, kelas CarRepository hanya bertanggung jawab untuk mengelola data mobil, seperti menambah, menghapus, atau memperbarui data. Jika ada bug atau perubahan terkait penyimpanan data, saya hanya perlu fokus pada kelas CarRepository tanpa memengaruhi kelas lain seperti CarController atau CarService. Hal ini membuat proses debugging dan perbaikan kode menjadi lebih mudah dan terarah.
 
 - Scalability
+  
   Prinsip Open/Closed Principle memungkinkan meluaskan skalabilitas tanpa mengubah kode yang sudah ada. Contohnya, jika saya ingin menambahkan fitur baru seperti pencarian mobil berdasarkan warna, saya hanya perlu menambahkan metode baru di CarService dan mengimplementasikannya di CarServiceImpl tanpa mengubah kode yang sudah berfungsi. Ini mengurangi risiko merusak fungsionalitas yang sudah ada dan memudahkan pengembangan fitur baru pada tugas selanjutnya.
 
 - Reliability
+  
   Dengan Liskov Substitution Principle, saya memastikan bahwa objek dari kelas turunan dapat menggantikan objek dari kelas induk tanpa mengubah perilaku program. Misalnya, CarServiceImpl mengimplementasikan interface CarService, sehingga ketika CarService digunakan, saya bisa menggantinya dengan CarServiceImpl tanpa khawatir akan terjadi kesalahan. Ini membuat kode lebih konsisten dan mengurangi kemungkinan terjadinya bug.
 
 - Clean Code
+  
   Interface Segregation Principle membantu saya memisahkan interface sesuai dengan kebutuhan. Misalnya, ProductService hanya berisi metode yang relevan dengan produk, seperti create, update, dan delete. Dengan demikian, kelas yang mengimplementasikan interface ini tidak perlu mengimplementasikan metode yang tidak dibutuhkan. Ini membuat kode lebih bersih, terorganisir, dan mudah dipahami.
 
 - Flexibility
+  
   Dengan Dependency Inversion Principle, saya menggunakan dependency injection untuk memisahkan ketergantungan antara modul. Misalnya, ProductController bergantung pada ProductService, bukan pada implementasi konkret seperti ProductServiceImpl. Ini memungkinkan saya untuk mengganti implementasi service dengan mudah, misalnya menggunakan mock object saat melakukan pengujian unit. Selain itu, jika suatu saat saya ingin mengganti repository dari penyimpanan in-memory ke database, saya hanya perlu mengubah implementasi repository tanpa mengubah service atau controller.
 
 _3) Explain the disadvantages of not applying SOLID principles to your project with examples._
 
 - Poor Maintainability
+
   Tanpa SRP, sebuah kelas mungkin memiliki terlalu banyak responsibility. Misalnya, jika kelas CarController tidak hanya menangani permintaan HTTP tetapi juga mengelola logika bisnis dan penyimpanan data, maka setiap kali ada perubahan pada salah satu aspek tersebut, saya harus memodifikasi kelas yang sama. Hal ini membuat kode menjadi rumit dan rentan terhadap kesalahan. Jika terjadi bug, akan sulit untuk melacak sumber masalahnya karena responsibilitas yang tumpang tindih.
 
 - Lack of Scalability
+  
   Tanpa OCP, setiap kali saya ingin menambahkan fitur baru, saya mungkin harus memodifikasi kode yang sudah ada. Misalnya, jika saya ingin menambahkan fitur pencarian mobil berdasarkan warna, saya mungkin harus mengubah kelas CarRepository yang sudah berfungsi. Ini berisiko merusak fungsionalitas yang sudah ada dan membutuhkan testing yang ekstensif.
 
 - Inconsistency and Unreliability
-Tanpa LSP, objek dari kelas turunan mungkin tidak dapat menggantikan objek dari kelas induk dengan benar. Misalnya, jika CarServiceImpl tidak sepenuhnya mengimplementasikan semua metode dari CarService atau mengubah perilaku yang diharapkan, maka penggunaan CarServiceImpl di tempat CarService dapat menyebabkan bug yang sulit di-tracking. Ini membuat sistem menjadi tidak konsisten dan tidak dapat diandalkan.
+  
+  Tanpa LSP, objek dari kelas turunan mungkin tidak dapat menggantikan objek dari kelas induk dengan benar. Misalnya, jika CarServiceImpl tidak sepenuhnya mengimplementasikan semua metode dari CarService atau mengubah perilaku yang diharapkan, maka penggunaan CarServiceImpl di tempat CarService dapat menyebabkan bug yang sulit di-tracking. Ini membuat sistem menjadi tidak konsisten dan tidak dapat diandalkan.
 
 - Messy Code
+  
   Tanpa ISP, sebuah interface mungkin memiliki terlalu banyak metode yang tidak relevan. Misalnya, jika ProductService memiliki metode yang tidak hanya terkait dengan produk tetapi juga dengan kategori produk, maka kelas yang mengimplementasikan interface ini harus mengimplementasikan semua metode tersebut, bahkan jika tidak dibutuhkan. Ini membuat kode menjadi berantakan dan sulit dipahami,
 
 - High Coupling and Poor Testability
+  
   Tanpa DIP, modul tingkat tinggi mungkin bergantung langsung pada modul tingkat rendah. Misalnya, jika ProductController bergantung langsung pada ProductRepository, maka setiap kali ada perubahan pada ProductRepository, saya mungkin harus mengubah ProductController. Selain itu, pengujian unit menjadi sulit karena saya tidak bisa dengan mudah mengganti ProductRepository dengan mock object. Ini membuat kode menjadi sulit diuji.
 
 </details>
