@@ -385,7 +385,7 @@ _1) Explain what principles you apply to your project!_
 _2) Explain the advantages of applying SOLID principles to your project with examples_
 
 - Maintainability
-  Dengan menerapkan Single Responsibility Principle, setiap kelas hanya memiliki satu tanggung jawab. Misalnya, dalam proyek ini, kelas CarRepository hanya bertanggung jawab untuk mengelola data mobil, seperti menambah, menghapus, atau memperbarui data. Jika ada bug atau perubahan terkait penyimpanan data, saya hanya perlu fokus pada kelas CarRepository tanpa memengaruhi kelas lain seperti CarController atau CarService. Hal ini membuat proses debugging dan perbaikan kode menjadi lebih mudah dan terarah.
+  Dengan menerapkan Single Responsibility Principle, setiap kelas hanya memiliki satu responsibility. Misalnya, dalam proyek ini, kelas CarRepository hanya bertanggung jawab untuk mengelola data mobil, seperti menambah, menghapus, atau memperbarui data. Jika ada bug atau perubahan terkait penyimpanan data, saya hanya perlu fokus pada kelas CarRepository tanpa memengaruhi kelas lain seperti CarController atau CarService. Hal ini membuat proses debugging dan perbaikan kode menjadi lebih mudah dan terarah.
 
 - Scalability
   Prinsip Open/Closed Principle memungkinkan meluaskan skalabilitas tanpa mengubah kode yang sudah ada. Contohnya, jika saya ingin menambahkan fitur baru seperti pencarian mobil berdasarkan warna, saya hanya perlu menambahkan metode baru di CarService dan mengimplementasikannya di CarServiceImpl tanpa mengubah kode yang sudah berfungsi. Ini mengurangi risiko merusak fungsionalitas yang sudah ada dan memudahkan pengembangan fitur baru pada tugas selanjutnya.
@@ -401,6 +401,19 @@ _2) Explain the advantages of applying SOLID principles to your project with exa
 
 _3) Explain the disadvantages of not applying SOLID principles to your project with examples._
 
+- Poor Maintainability
+  Tanpa SRP, sebuah kelas mungkin memiliki terlalu banyak responsibility. Misalnya, jika kelas CarController tidak hanya menangani permintaan HTTP tetapi juga mengelola logika bisnis dan penyimpanan data, maka setiap kali ada perubahan pada salah satu aspek tersebut, saya harus memodifikasi kelas yang sama. Hal ini membuat kode menjadi rumit dan rentan terhadap kesalahan. Jika terjadi bug, akan sulit untuk melacak sumber masalahnya karena responsibilitas yang tumpang tindih.
 
+- Lack of Scalability
+  Tanpa OCP, setiap kali saya ingin menambahkan fitur baru, saya mungkin harus memodifikasi kode yang sudah ada. Misalnya, jika saya ingin menambahkan fitur pencarian mobil berdasarkan warna, saya mungkin harus mengubah kelas CarRepository yang sudah berfungsi. Ini berisiko merusak fungsionalitas yang sudah ada dan membutuhkan testing yang ekstensif.
+
+- Inconsistency and Unreliability
+Tanpa LSP, objek dari kelas turunan mungkin tidak dapat menggantikan objek dari kelas induk dengan benar. Misalnya, jika CarServiceImpl tidak sepenuhnya mengimplementasikan semua metode dari CarService atau mengubah perilaku yang diharapkan, maka penggunaan CarServiceImpl di tempat CarService dapat menyebabkan bug yang sulit di-tracking. Ini membuat sistem menjadi tidak konsisten dan tidak dapat diandalkan.
+
+- Messy Code
+  Tanpa ISP, sebuah interface mungkin memiliki terlalu banyak metode yang tidak relevan. Misalnya, jika ProductService memiliki metode yang tidak hanya terkait dengan produk tetapi juga dengan kategori produk, maka kelas yang mengimplementasikan interface ini harus mengimplementasikan semua metode tersebut, bahkan jika tidak dibutuhkan. Ini membuat kode menjadi berantakan dan sulit dipahami,
+
+- High Coupling and Poor Testability
+  Tanpa DIP, modul tingkat tinggi mungkin bergantung langsung pada modul tingkat rendah. Misalnya, jika ProductController bergantung langsung pada ProductRepository, maka setiap kali ada perubahan pada ProductRepository, saya mungkin harus mengubah ProductController. Selain itu, pengujian unit menjadi sulit karena saya tidak bisa dengan mudah mengganti ProductRepository dengan mock object. Ini membuat kode menjadi sulit diuji.
 
 </details>
