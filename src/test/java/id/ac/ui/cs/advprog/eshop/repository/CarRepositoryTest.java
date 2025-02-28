@@ -171,6 +171,34 @@ class CarRepositoryTest {
     }
 
     @Test
+    void testEditCarWithValidColor() {
+        Car savedCar = carRepository.create(sampleCar);
+        String newColor = "Red";
+
+        Car updatedCar = new Car();
+        updatedCar.setCarColor(newColor);
+        carRepository.update(savedCar.getCarId(), updatedCar);
+
+        Car retrievedCar = carRepository.findById(savedCar.getCarId());
+        assertEquals(newColor, retrievedCar.getCarColor());
+        assertEquals(sampleCar.getCarName(), retrievedCar.getCarName());
+        assertEquals(sampleCar.getCarQuantity(), retrievedCar.getCarQuantity());
+    }
+
+    @Test
+    void testEditCarWithNullColor() {
+        Car savedCar = carRepository.create(sampleCar);
+        String originalColor = savedCar.getCarColor();
+
+        Car updatedCar = new Car();
+        updatedCar.setCarColor(null);
+        carRepository.update(savedCar.getCarId(), updatedCar);
+
+        Car retrievedCar = carRepository.findById(savedCar.getCarId());
+        assertEquals(originalColor, retrievedCar.getCarColor());
+    }
+
+    @Test
     void testAllFeatures() {
         Car savedCar = carRepository.create(sampleCar);
         assertNotNull(savedCar.getCarId());

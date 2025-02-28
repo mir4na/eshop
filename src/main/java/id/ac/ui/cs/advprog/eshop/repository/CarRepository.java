@@ -38,6 +38,10 @@ public class CarRepository {
             car.setCarName(updatedCar.getCarName());
         }
 
+        if (updatedCar.getCarColor() != null) {
+            car.setCarColor(updatedCar.getCarColor());
+        }
+
         if (updatedCar.getCarQuantity() > 0) {
             car.setCarQuantity(updatedCar.getCarQuantity());
         }
