@@ -26,17 +26,23 @@
       animation: glow 2s ease-in-out infinite alternate;
     }
 
+    .btn-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
     .btn-primary {
       background: transparent;
       border: 2px solid #00f7ff;
       border-radius: 25px;
       padding: 10px 30px;
       color: #00f7ff;
-
-
       letter-spacing: 2px;
       transition: all 0.3s ease;
       box-shadow: 0 0 15px rgba(0,247,255,0.3);
+      width: 200px;
     }
 
     .btn-primary:hover {
@@ -61,7 +67,10 @@
 <body>
 <div class="container">
   <h3>Welcome</h3>
-  <a th:href="@{/product/list}" class="btn btn-primary">see product list</a>
+  <div class="btn-container">
+    <a th:href="@{/product/list}" class="btn btn-primary">see product list</a>
+    <a th:href="@{car/listCar}" class="btn btn-primary">see car list</a>
+  </div>
 </div>
 </body>
 </html>
