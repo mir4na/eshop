@@ -438,12 +438,15 @@ _3) Explain the disadvantages of not applying SOLID principles to your project w
 
 ___
 _1. Reflect based on Percival (2017) proposed self-reflective questions (in “Principles and Best Practice of Testing” submodule, chapter “Evaluating Your Testing Objectives”), whether this TDD flow is useful enough for you or not. If not, explain things that you need to do next time you make more tests._
-
-_2. You have created unit tests in Tutorial. Now reflect whether your tests have successfully followed F.I.R.S.T. principle or not. If not, explain things that you need to do the next time you create more tests._
 ___
 
 Secara keseluruhan, TDD (Test-Driven Development) yang saya lakukan sangat berguna karena membantu saya dalam menemukan bug sejak awal dan memastikan kode berfungsi sesuai harapan. Namun, saya menyadari bahwa cakupan pengujian (test coverage) masih terbatas, terutama untuk edge cases seperti input yang tidak valid atau kondisi input yang ekstrem. Selain itu, pengujian saat ini hanya berfokus pada unit test sehingga perlu dipertimbangkan untuk menambahkan pengujian integrasi guna memastikan komponen-komponen sistem bekerja sama dengan baik. Hal ini akan memberikan kepercayaan diri lebih besar bahwa sistem secara keseluruhan berfungsi secara optimal.
 
 Dari segi maintainability, kode pengujian yang saya tulis cukup mudah dipahami, tetapi masih ada yang seharusnya diperbaiki. Saya perlu menambahkan lebih banyak dokumentasi yang menjelaskan tujuan setiap pengujian agar memudahkan pemeliharaan di masa yang akan datang. Selain itu, kode pengujian perlu tetap bersih dan terorganisir, mungkin dengan melakukan refactoring jika diperlukan. Dengan memperluas cakupan pengujian, menambahkan pengujian integrasi, dan meningkatkan maintainability, saya yakin pengujian akan menjadi lebih efektif dan memberikan nilai yang signifikan bagi proyek saya ke depannya.
-    
+
+___
+_2. You have created unit tests in Tutorial. Now reflect whether your tests have successfully followed F.I.R.S.T. principle or not. If not, explain things that you need to do the next time you create more tests._
+___
+
+
 </details>
