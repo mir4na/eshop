@@ -432,3 +432,15 @@ _3) Explain the disadvantages of not applying SOLID principles to your project w
   Tanpa DIP, modul tingkat tinggi mungkin bergantung langsung pada modul tingkat rendah. Misalnya, jika ProductController bergantung langsung pada ProductRepository, maka setiap kali ada perubahan pada ProductRepository, saya mungkin harus mengubah ProductController. Selain itu, pengujian unit menjadi sulit karena saya tidak bisa dengan mudah mengganti ProductRepository dengan mock object. Ini membuat kode menjadi sulit diuji.
 
 </details>
+
+<details>
+    <summary><b>Tutorial 4</b></summary>
+
+___
+_1. Reflect based on Percival (2017) proposed self-reflective questions (in “Principles and Best Practice of Testing” submodule, chapter “Evaluating Your Testing Objectives”), whether this TDD flow is useful enough for you or not. If not, explain things that you need to do next time you make more tests._
+
+_2. You have created unit tests in Tutorial. Now reflect whether your tests have successfully followed F.I.R.S.T. principle or not. If not, explain things that you need to do the next time you create more tests._
+___
+
+    
+</details>
