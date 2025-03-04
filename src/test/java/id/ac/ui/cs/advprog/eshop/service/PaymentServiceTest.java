@@ -32,7 +32,7 @@ public class PaymentServiceTest {
     private OrderRepository orderRepository;
 
     @InjectMocks
-    private PaymentService paymentService;
+    private PaymentServiceImpl paymentService;
 
     private Order order;
     private Map<String, String> voucherPaymentData;
