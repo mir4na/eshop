@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Order Payment</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container my-4">
+  <h2>Order Payment</h2>
+  <div class="card">
+    <div class="card-header">Order Details</div>
+    <div class="card-body">
+      <p>Order ID: <span th:text="${order.id}"></span></p>
+      <p>Author: <span th:text="${order.author}"></span></p>
+      <p>Order Time:<span th:text="${order.orderTime != null} ? ${#dates.format(new java.util.Date(order.orderTime), 'dd-MM-yyyy HH:mm')} : 'N/A'"></span></p>
+      <h4>Products</h4>
+      <table class="table">
+        <thead>
+        <tr>
+          <th>Product Name</th>
+          <th>Quantity</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="product : ${order.products}">
+          <td th:text="${product.productName}"></td>
+          <td th:text="${product.productQuantity}"></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <form th:action="@{/order/pay/{orderId}(orderId=${order.id})}" method="post" class="mt-3">
+    <div class="form-group">
+      <label>Payment Method</label>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="paymentMethod" id="voucher" value="VOUCHER" required>
+        <label class="form-check-label" for="voucher">Voucher</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="paymentMethod" id="cod" value="COD" required>
+        <label class="form-check-label" for="cod">Cash on Delivery</label>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Process Payment</button>
+  </form>
+</div>
+</body>
+</html>
