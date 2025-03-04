@@ -3,6 +3,7 @@ package id.ac.ui.cs.advprog.eshop.model;
 import lombok.Getter;
 import enums.PaymentStatus;
 import enums.PaymentMethod;
+import validator.*;
 
 import java.util.Map;
 import java.util.UUID;
@@ -14,6 +15,8 @@ public class Payment {
     private final Map<String, String> paymentData;
     private final Order order;
     private String status;
+    private final VoucherPayment voucherPaymentValidator = new VoucherPayment();
+    private final CODPayment codPaymentValidator = new CODPayment();
 
     public Payment(String method, Map<String, String> paymentData, Order order) {
         if (order == null) {
@@ -24,7 +27,7 @@ public class Payment {
             throw new IllegalArgumentException("Payment data cannot be null");
         }
 
-        this.id = UUID.randomUUID().toString(); // Generate UUID as String
+        this.id = UUID.randomUUID().toString();
         this.order = order;
         this.paymentData = paymentData;
 
@@ -45,51 +48,19 @@ public class Payment {
     }
 
     private void validateVoucherPayment() {
-        String voucherCode = this.paymentData.get("voucherCode");
-
-        if (voucherCode == null) {
-            throw new IllegalArgumentException("Voucher code cannot be null");
-        }
-
-        if (isValidVoucher(voucherCode)) {
+        if (voucherPaymentValidator.validate(this.paymentData)) {
             this.status = PaymentStatus.SUCCESS.getValue();
         } else {
             this.status = PaymentStatus.REJECTED.getValue();
         }
     }
 
-    private boolean isValidVoucher(String voucherCode) {
-        if (voucherCode.length() != 16) {
-            throw new IllegalArgumentException("Voucher code must be 16 characters long");
-        }
-
-        if (!voucherCode.startsWith("ESHOP")) {
-            throw new IllegalArgumentException("Voucher code must start with 'ESHOP'");
-        }
-
-        int numCount = 0;
-        for (char c : voucherCode.toCharArray()) {
-            if (Character.isDigit(c)) {
-                numCount++;
-            }
-        }
-
-        if (numCount != 8) {
-            throw new IllegalArgumentException("Voucher code must contain exactly 8 digits");
-        }
-
-        return true;
-    }
-
     private void validateCODPayment() {
-        String address = this.paymentData.get("address");
-        String deliveryFee = this.paymentData.get("deliveryFee");
-
-        if (address == null || address.isEmpty() || deliveryFee == null || deliveryFee.isEmpty()) {
-            throw new IllegalArgumentException("Address and delivery fee cannot be null or empty");
+        if (codPaymentValidator.validate(this.paymentData)) {
+            this.status = PaymentStatus.SUCCESS.getValue();
+        } else {
+            this.status = PaymentStatus.REJECTED.getValue();
         }
-
-        this.status = PaymentStatus.SUCCESS.getValue();
     }
 
     public void setStatus(String status) {
