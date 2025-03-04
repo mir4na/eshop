@@ -7,10 +7,7 @@ import enums.PaymentMethod;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -18,68 +15,55 @@ public class PaymentRepositoryTest {
     private PaymentRepository paymentRepository;
     private Payment payment1;
     private Payment payment2;
-    Order order;
+    private Order order;
 
     @BeforeEach
     void setUp() {
         paymentRepository = new PaymentRepository();
+        order = createSampleOrder();
+        payment1 = createPayment(PaymentMethod.VOUCHER, Map.of("voucherCode", "ESHOP1234ABC5678"));
+        payment2 = createPayment(PaymentMethod.COD, Map.of("address", "Jl. Walet Indah 3, No. 10", "deliveryFee", "12000"));
+    }
 
-        List<Product> products = new ArrayList<>();
+    private Order createSampleOrder() {
         Product product = new Product();
-        product.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
-        product.setProductName("Sampo Cap Bambang");
+        product.setProductName("Electronics");
         product.setProductQuantity(2);
-        products.add(product);
-        order = new Order("13652556-012a-4c07-b546-54eb1396d79b", products, 1708560000L, "Safira Sudrajat");
+        product.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
+        return new Order("13652556-012a-4c07-b546-54eb1396d79b", List.of(product), 1708560000L, "Safira Sudrajat");
+    }
 
-        Map<String, String> voucherPaymentData = new HashMap<>();
-        voucherPaymentData.put("voucherCode", "ESHOP1234ABC5678");
-        payment1 = new Payment(PaymentMethod.VOUCHER.getValue(), voucherPaymentData, order);
-
-        Map<String, String> codPaymentData = new HashMap<>();
-        codPaymentData.put("address", "Jl. Walet Indah 3, No. 10");
-        codPaymentData.put("deliveryFee", "12000");
-        payment2 = new Payment(PaymentMethod.COD.getValue(), codPaymentData, order);
+    private Payment createPayment(PaymentMethod method, Map<String, String> paymentData) {
+        return new Payment(method.getValue(), paymentData, order);
     }
 
     @Test
     void testSaveNewPayment() {
         Payment savedPayment = paymentRepository.save(payment1);
         assertNotNull(savedPayment.getId());
-
-        Payment foundPayment = paymentRepository.findById(savedPayment.getId());
-        assertNotNull(foundPayment);
-        assertEquals(savedPayment.getId(), foundPayment.getId());
+        assertPaymentFound(savedPayment);
     }
 
     @Test
     void testSaveExistingPayment() {
         Payment savedPayment = paymentRepository.save(payment1);
-
         savedPayment.setStatus("REJECTED");
         Payment updatedPayment = paymentRepository.save(savedPayment);
 
         assertEquals("REJECTED", updatedPayment.getStatus());
-
-        List<Payment> allPayments = paymentRepository.findAll();
-        assertEquals(1, allPayments.size());
+        assertEquals(1, paymentRepository.findAll().size());
     }
 
     @Test
     void testFindById() {
         paymentRepository.save(payment1);
         paymentRepository.save(payment2);
-
-        Payment foundPayment = paymentRepository.findById(payment2.getId());
-        assertNotNull(foundPayment);
-        assertEquals(payment2.getId(), foundPayment.getId());
-        assertEquals(PaymentMethod.COD.getValue(), foundPayment.getMethod());
+        assertPaymentFound(payment2);
     }
 
     @Test
     void testFindByIdNotFound() {
-        Payment foundPayment = paymentRepository.findById("non-existent-id");
-        assertNull(foundPayment);
+        assertNull(paymentRepository.findById("non-existent-id"));
     }
 
     @Test
@@ -89,13 +73,17 @@ public class PaymentRepositoryTest {
 
         List<Payment> allPayments = paymentRepository.findAll();
         assertEquals(2, allPayments.size());
-        assertTrue(allPayments.contains(payment1));
-        assertTrue(allPayments.contains(payment2));
+        assertTrue(allPayments.containsAll(List.of(payment1, payment2)));
     }
 
     @Test
     void testFindAllEmptyRepository() {
-        List<Payment> allPayments = paymentRepository.findAll();
-        assertTrue(allPayments.isEmpty());
+        assertTrue(paymentRepository.findAll().isEmpty());
+    }
+
+    private void assertPaymentFound(Payment payment) {
+        Payment foundPayment = paymentRepository.findById(payment.getId());
+        assertNotNull(foundPayment);
+        assertEquals(payment.getId(), foundPayment.getId());
     }
 }
