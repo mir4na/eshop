@@ -6,6 +6,8 @@ import id.ac.ui.cs.advprog.eshop.model.Product;
 import id.ac.ui.cs.advprog.eshop.repository.OrderRepository;
 import id.ac.ui.cs.advprog.eshop.repository.PaymentRepository;
 import enums.PaymentMethod;
+import enums.PaymentStatus;
+import enums.OrderStatus;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -115,6 +117,17 @@ class PaymentServiceTest {
     void testSetStatusToRejected() {
         Payment payment = new Payment(PaymentMethod.VOUCHER.getValue(), voucherPaymentData, mockOrder);
         mockOrder.setStatus("SUCCESS");
+
+        Payment updatedPayment = performStatusUpdateTest(payment, "REJECTED");
+
+        assertEquals("REJECTED", updatedPayment.getStatus());
+        assertEquals("FAILED", mockOrder.getStatus());
+    }
+
+    @Test
+    void testSetStatusToRejectedFromInitialSuccessStatus() {
+        Payment payment = new Payment(PaymentMethod.VOUCHER.getValue(), voucherPaymentData, mockOrder);
+        mockOrder.setStatus("WAITING_PAYMENT");
 
         Payment updatedPayment = performStatusUpdateTest(payment, "REJECTED");
 
