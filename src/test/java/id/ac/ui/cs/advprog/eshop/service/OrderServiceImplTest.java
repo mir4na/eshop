@@ -139,4 +139,32 @@ public class OrderServiceImplTest {
                 order.getAuthor().toLowerCase());
         assertTrue(results.isEmpty());
     }
+
+    @Test
+    public void testCancelOrderSuccess() {
+        Order order = orders.get(1);
+        Order cancelledOrder = new Order(order.getId(), order.getProducts(), order.getOrderTime(),
+                order.getAuthor(), OrderStatus.CANCELLED.getValue());
+
+        doReturn(order).when(orderRepository).findById(order.getId());
+        doReturn(cancelledOrder).when(orderRepository).save(any(Order.class));
+
+        Order result = orderService.cancelOrder(order.getId());
+
+        assertEquals(order.getId(), result.getId());
+        assertEquals(OrderStatus.CANCELLED.getValue(), result.getStatus());
+        verify(orderRepository, times(1)).findById(order.getId());
+        verify(orderRepository, times(1)).save(any(Order.class));
+    }
+
+    @Test
+    public void testCancelOrderNotFound() {
+        String nonExistentOrderId = "non-existent-id";
+        doReturn(null).when(orderRepository).findById(nonExistentOrderId);
+
+        assertThrows(NoSuchElementException.class, () -> orderService.cancelOrder(nonExistentOrderId));
+
+        verify(orderRepository, times(1)).findById(nonExistentOrderId);
+        verify(orderRepository, times(0)).save(any(Order.class));
+    }
 }
