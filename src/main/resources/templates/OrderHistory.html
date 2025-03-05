@@ -30,7 +30,14 @@
         </ul>
       </td>
       <td>
-        <a th:href="@{/order/pay/{orderId}(orderId=${order.id})}" class="btn btn-primary btn-sm">Pay</a>
+        <a th:href="@{/order/pay/{orderId}(orderId=${order.id})}"
+           th:if="${order.status == 'WAITING_PAYMENT'}"
+           class="btn btn-primary btn-sm mr-1">Pay</a>
+        <form th:if="${order.status == 'WAITING_PAYMENT'}"
+              th:action="@{/order/cancel/{orderId}(orderId=${order.id})}"
+              method="post" class="d-inline">
+          <button type="submit" class="btn btn-danger btn-sm">Cancel</button>
+        </form>
       </td>
     </tr>
     </tbody>

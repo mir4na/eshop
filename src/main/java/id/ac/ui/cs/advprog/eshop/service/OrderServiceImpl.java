@@ -27,7 +27,7 @@ public class OrderServiceImpl implements OrderService {
         Order order = orderRepository.findById(orderId);
         if (order != null) {
             Order newOrder = new Order(order.getId(), order.getProducts(),
-                order.getOrderTime(), order.getAuthor(), status);
+                    order.getOrderTime(), order.getAuthor(), status);
             orderRepository.save(newOrder);
             return newOrder;
         } else {
@@ -43,5 +43,16 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order findById(String orderId) {
         return orderRepository.findById(orderId);
+    }
+
+    @Override
+    public Order cancelOrder(String orderId) {
+        Order order = orderRepository.findById(orderId);
+        if (order != null) {
+            order.cancel();
+            return orderRepository.save(order);
+        } else {
+            throw new NoSuchElementException();
+        }
     }
 }

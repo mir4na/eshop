@@ -1,9 +1,9 @@
 package id.ac.ui.cs.advprog.eshop.service;
 
+import java.util.List;
+import java.util.Map;
 import id.ac.ui.cs.advprog.eshop.model.Order;
 import id.ac.ui.cs.advprog.eshop.model.Payment;
-import java.util.Map;
-import java.util.List;
 
 public interface PaymentService {
     Payment addPayment(Order order, String method, Map<String, String> paymentData);

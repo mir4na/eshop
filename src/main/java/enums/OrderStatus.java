@@ -10,7 +10,7 @@ public enum OrderStatus {
     CANCELLED("CANCELLED");
 
     private final String value;
-    private OrderStatus(String value) {
+    OrderStatus(String value) {
         this.value = value;
     }
 

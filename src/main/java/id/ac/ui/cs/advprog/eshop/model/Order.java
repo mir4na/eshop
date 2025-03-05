@@ -40,4 +40,12 @@ public class Order {
             throw new IllegalArgumentException();
         }
     }
+
+    public void cancel() {
+        if (this.status.equals(OrderStatus.WAITING_PAYMENT.getValue())) {
+            this.status = OrderStatus.CANCELLED.getValue();
+        } else {
+            throw new IllegalStateException("Order can only be cancelled when in WAITING_PAYMENT status");
+        }
+    }
 }
