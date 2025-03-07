@@ -1,9 +1,10 @@
 package id.ac.ui.cs.advprog.eshop.model;
 
+import id.ac.ui.cs.advprog.eshop.validator.CODPayment;
+import id.ac.ui.cs.advprog.eshop.validator.VoucherPayment;
 import lombok.Getter;
-import enums.PaymentStatus;
-import enums.PaymentMethod;
-import validator.*;
+import id.ac.ui.cs.advprog.eshop.enums.PaymentStatus;
+import id.ac.ui.cs.advprog.eshop.enums.PaymentMethod;
 
 import java.util.Map;
 import java.util.UUID;
