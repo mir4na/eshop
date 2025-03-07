@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Order History</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container my-4">
+  <h2>Order History</h2>
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>Order ID</th>
+      <th>Order Time</th>
+      <th>Status</th>
+      <th>Products</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="order : ${orders}">
+      <td th:text="${order.id}"></td>
+      <td th:text="${#dates.format(order.orderTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+      <td th:text="${order.status}"></td>
+      <td>
+        <ul>
+          <li th:each="product : ${order.products}"
+              th:text="${product.productName}"></li>
+        </ul>
+      </td>
+      <td>
+        <a th:href="@{/order/pay/{orderId}(orderId=${order.id})}"
+           th:if="${order.status == 'WAITING_PAYMENT'}"
+           class="btn btn-primary btn-sm mr-1">Pay</a>
+        <form th:if="${order.status == 'WAITING_PAYMENT'}"
+              th:action="@{/order/cancel/{orderId}(orderId=${order.id})}"
+              method="post" class="d-inline">
+          <button type="submit" class="btn btn-danger btn-sm">Cancel</button>
+        </form>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+</body>
+</html>
